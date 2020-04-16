@@ -46,6 +46,8 @@ public:
 	~AltSoftSerial() { end(); }
 	static void begin(uint32_t baud) { init((ALTSS_BASE_FREQ + baud / 2) / baud); }
 	static void end();
+	static void setupPhyPins();
+	static void disablePhyPins();
 	int peek();
 	int read();
 	int available();

@@ -101,9 +101,7 @@ void AltSoftSerial::init(uint32_t cycles_per_bit)
 	}
 	ticks_per_bit = cycles_per_bit;
 	rx_stop_ticks = cycles_per_bit * 37 / 4;
-	pinMode(INPUT_CAPTURE_PIN, INPUT_PULLUP);
-	digitalWrite(OUTPUT_COMPARE_A_PIN, HIGH);
-	pinMode(OUTPUT_COMPARE_A_PIN, OUTPUT);
+	setupPhyPins();
 	rx_state = 0;
 	rx_buffer_head = 0;
 	rx_buffer_tail = 0;
@@ -112,7 +110,16 @@ void AltSoftSerial::init(uint32_t cycles_per_bit)
 	tx_buffer_tail = 0;
 	ENABLE_INT_INPUT_CAPTURE();
 }
-
+void AltSoftSerial::setupPhyPins(void) {
+	pinMode(INPUT_CAPTURE_PIN, INPUT_PULLUP);
+	digitalWrite(OUTPUT_COMPARE_A_PIN, HIGH);
+	pinMode(OUTPUT_COMPARE_A_PIN, OUTPUT);
+}
+void AltSoftSerial::disablePhyPins(void) {
+	pinMode(INPUT_CAPTURE_PIN, INPUT);
+	//digitalWrite(OUTPUT_COMPARE_A_PIN, HIGH);
+	pinMode(OUTPUT_COMPARE_A_PIN, INPUT);
+}
 void AltSoftSerial::end(void)
 {
 	DISABLE_INT_COMPARE_B();
